@@ -1,6 +1,8 @@
 DESCRIPTION
 -----------
 
+This is a modified clone of Neal H. Walfield's git2html http://hssl.cs.jhu.edu/~neal/git2html/
+
 git2html is a simple git web interface. Unlike other web interfaces,
 git2html does not generate content dynamically: instead of using a CGI
 script, it generates static HTML pages.
@@ -26,7 +28,7 @@ Here is how I configured git2html's viewer directory:
  $ ./git2html.sh \
      -p git2html \
      -l http://hssl.cs.jhu.edu/~neal/git2html.git \
-     -r /home/neal/public_html/git2html.git 
+     -r /home/neal/public_html/git2html.git
      ~/public_html/git2html/src/
 
 Note that this first run will take a fair amount of time.  git2html
@@ -44,16 +46,11 @@ run:
 HOMEPAGE
 --------
 
-http://hssl.cs.jhu.edu/~neal/git2html/
+https://github.com/ZakharDay/git2html
 
 SOURCE
 ------
 
 To get the source:
 
-  git clone http://hssl.cs.jhu.edu/~neal/git2html.git
-
-BUG REPORTS
------------
-
-Send bug reports to Neal H. Walfield <neal@walfield.org>.
+  git clone https://github.com/ZakharDay/git2html.git
