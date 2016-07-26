@@ -18,7 +18,7 @@
 
 set -e
 set -o pipefail
-set -x
+# set -x
 
 usage()
 {
