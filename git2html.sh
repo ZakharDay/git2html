@@ -18,7 +18,7 @@
 
 set -e
 set -o pipefail
-# set -x
+set -x
 
 usage()
 {
@@ -333,7 +333,7 @@ do
     author=$(echo "$metadata" \
 	| gawk '/^author / { NF=NF-2; $1=""; sub(" ", ""); print $0 }')
     date=$(echo "$metadata" | gawk '/^author / { print $(NF=NF-1); }')
-    date=$(date -u -d "1970-01-01 $date sec")
+    #date=$(date -u -d "1970-01-01 $date sec")
     log=$(echo "$metadata" | gawk '/^    / { if (!done) print $0; done=1; }')
     loglong=$(echo "$metadata" | gawk '/^    / { print $0; }')
 
@@ -348,7 +348,7 @@ do
       #   $ mkdir foo
       #   $ ln -s foo bar
       #   $ ln -s baz bar
-      #   $ ls -ld bar bar/baz 
+      #   $ ls -ld bar bar/baz
       #   lrwxrwxrwx 1 neal neal 3 Aug  3 09:14 bar -> foo
       #   lrwxrwxrwx 1 neal neal 3 Aug  3 09:14 bar/baz -> baz
       rm -f "$TARGET/branches/$branch"
@@ -455,7 +455,7 @@ do
              # Remove the file.  Keep the directories.
              file=components[length(components)]
              delete components[length(components)];
-  
+
              # See if a path component changed.
              for (i = 1;
                   i <= min(length(components), length(current_components));
@@ -475,7 +475,7 @@ do
                printf ("</ul> <!-- %s -->\n", current_components[j]);
                delete current_components[j];
              }
-  
+
              # If there are new path components push them on the
              # current_component stack.
              for (; i <= length(components); i ++)
@@ -487,7 +487,7 @@ do
                  spaces(i);
                  printf("<ul>\n");
              }
-  
+
              spaces(length(current_components))
              printf ("<li><a name=\"files:%s\" href=\"%s.raw.html\">%s</a>\n",
                      $0, $0, file);
@@ -596,4 +596,3 @@ done
   echo "</ul>"
   html_footer
 } >> "$INDEX"
-
