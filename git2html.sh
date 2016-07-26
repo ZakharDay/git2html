@@ -3,6 +3,9 @@
 # git2html - Convert a git repository to a set of static HTML pages.
 # Copyright (c) 2011 Neal H. Walfield <neal@walfield.org>
 #
+# Modified by Zakhar Day
+# Copyright (c) 2016 Zakhar Day <zakhar.day@gmail.com>
+#
 # git2html is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 3 of the License, or
