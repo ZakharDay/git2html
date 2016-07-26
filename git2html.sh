@@ -21,7 +21,7 @@
 
 set -e
 set -o pipefail
-# set -x
+set -x
 
 usage()
 {
@@ -196,7 +196,7 @@ then
   # when there is a non-fast forward merge.  We do want one branch:
   # the main branch, which we preferred as a detached head.
   first=""
-  git branch -l | sed 's/^..//' | while read -r branch
+  git branch -l | LC_ALL=C sed 's/^..//' | while read -r branch
   do
     if test x"$first" = x
     then
@@ -220,13 +220,13 @@ if test x"$BRANCHES" = x
 then
   # Strip the start of lines of the form 'origin/HEAD -> origin/master'
   BRANCHES=$(git branch --no-color -r \
-               | sed 's#.*->##; s#^ *origin/##;')
+               | LC_ALL=C sed 's#.*->##; s#^ *origin/##;')
 fi
 
 first=""
 # Ignore 'origin/HEAD -> origin/master'
 for branch in ${BRANCHES:-$(git branch --no-color -r \
-                              | sed 's#.*->.*##;
+                              | LC_ALL=C sed 's#.*->.*##;
                                      s#^ *origin/##;
                                      s#^ *HEAD *$##;')}
 do
@@ -312,9 +312,9 @@ do
   do
     # See http://www.itnewb.com/unicode
     graph=$(echo "$commitline" \
-            | sed 's/ [0-9a-f]*$//; s/|/\&#x2503;/g; s/[*]/\&#x25CF;/g;
+            | LC_ALL=C sed 's/ [0-9a-f]*$//; s/|/\&#x2503;/g; s/[*]/\&#x25CF;/g;
                    s/[\]/\&#x2B0A;/g; s/\//\&#x2B0B;/g;')
-    commit=$(echo "$commitline" | sed 's/^[^0-9a-f]*//')
+    commit=$(echo "$commitline" | LC_ALL=C sed 's/^[^0-9a-f]*//')
 
     if test x"$commit" = x
     then
@@ -330,7 +330,7 @@ do
 
     # Extract metadata about this commit.
     metadata=$(git log -n 1 --pretty=raw $commit \
-        | sed 's#<#\&lt;#g; s#>#\&gt;#g; ')
+        | LC_ALL=C sed 's#<#\&lt;#g; s#>#\&gt;#g; ')
     parent=$(echo "$metadata" \
 	| gawk '/^parent / { $1=""; sub (" ", ""); print $0 }')
     author=$(echo "$metadata" \
@@ -378,7 +378,7 @@ do
     COMMIT_BASE="$TARGET/commits/$commit"
     if test -e "$COMMIT_BASE"
     then
-      progress "Commit $commit ($c/$ccount): already processed."
+      progress "Commit $commit ($c/$ccount): already procesLC_ALL=C sed."
       continue
     fi
 
@@ -428,10 +428,10 @@ do
 
       # The list of files as a hierarchy.  Sort them so that within a
       # directory, files preceed sub-directories
-      sed 's/\([^ \t]\+[ \t]\)\{3\}//;
+      LC_ALL=C sed 's/\([^ \t]\+[ \t]\)\{3\}//;
                  s#^#/#; s#/\([^/]*/\)#/1\1#; s#/\([^/]*\)$#/0\1#;' \
           < "$FILES" \
-	  | sort | sed 's#/[01]#/#g; s#^/##' \
+	  | sort | LC_ALL=C sed 's#/[01]#/#g; s#^/##' \
 	  | gawk '
            function spaces(l) {
              for (space = 1; space <= l; space ++) { printf ("  "); }
@@ -514,7 +514,7 @@ do
     for p in $parent
     do
       {
-        html_header "diff $(echo $commit | sed 's/^\(.\{8\}\).*/\1/') $(echo $p | sed 's/^\(.\{8\}\).*/\1/')" "../.."
+        html_header "diff $(echo $commit | LC_ALL=C sed 's/^\(.\{8\}\).*/\1/') $(echo $p | LC_ALL=C sed 's/^\(.\{8\}\).*/\1/')" "../.."
         echo "<h2>Branch: <a href=\"../../branches/$branch.html\">$branch</a></h2>" \
           "<h3>Commit: <a href=\"index.html\">$commit</a></h3>" \
   	"<p>Author: $author" \
@@ -525,7 +525,7 @@ do
   	"<p>" \
           "<pre>"
         git diff -p $p..$commit \
-          | sed 's#<#\&lt;#g; s#>#\&gt;#g;
+          | LC_ALL=C sed 's#<#\&lt;#g; s#>#\&gt;#g;
                  s#^\(diff --git a/\)\([^ ]\+\)#\1<a name="\2">\2</a>#;
                  s#^\(\(---\|+++\|index\|diff\|deleted\|new\) .\+\)$#<b>\1</b>#;
                  s#^\(@@ .\+\)$#<font color=\"blue\">\1</font>#;
@@ -546,7 +546,7 @@ do
       sha=$(echo "$line" | gawk '{ print $3 }')
 
       object_dir="$TARGET/objects/"$(echo "$sha" \
-	  | sed 's#^\([a-f0-9]\{2\}\).*#\1#')
+	  | LC_ALL=C sed 's#^\([a-f0-9]\{2\}\).*#\1#')
       object="$object_dir/$sha"
 
       if test ! -e "$object"
@@ -565,7 +565,7 @@ do
           html_header "$sha"
           echo "<pre>"
           git show "$sha" \
-            | sed 's#<#\&lt;#g; s#>#\&gt;#g; ' \
+            | LC_ALL=C sed 's#<#\&lt;#g; s#>#\&gt;#g; ' \
             | gawk '{ ++line; printf("%6d: %s\n", line, $0); }'
           echo "</pre>"
           html_footer
@@ -577,7 +577,7 @@ do
       ln "$object" "$file.raw.html"
 
       # Create a hard link to the raw file.
-      raw_filename="raw/$(echo "$sha" | sed 's/^\(..\)/\1\//')"
+      raw_filename="raw/$(echo "$sha" | LC_ALL=C sed 's/^\(..\)/\1\//')"
       if ! test -e "$raw_filename"
       then
 	  mkdir -p "$(dirname "$raw_filename")"
