@@ -489,9 +489,9 @@ do
              }
 
              spaces(length(current_components))
-             printf ("<li><a name=\"files:%s\" href=\"%s.raw.html\">%s</a>\n",
+             printf ("<li><a name=\"files:%s\" href=\"README.md.raw.html\">%s</a>\n",
                      $0, $0, file);
-             printf ("  (<a href=\"%s\">raw</a>)\n", $0, file);
+             printf ("  (<a href=\"README.md\">raw</a>)\n", $0, file);
            }
 
            END {
